@@ -21,9 +21,9 @@ public class Book {
     private LocalDateTime borrowedDate;
     private LocalDateTime dueDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Long userId;
+    private User user;
 
 //    public Book(String title, String description, String author, String genre, String status, LocalDateTime borrowedDate, LocalDateTime dueDate, User user) {
 //        this.title = title;

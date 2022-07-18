@@ -3,6 +3,7 @@ package com.project.bookmarks.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,4 +18,7 @@ public class User {
     private String email;
     private Integer contactNo;
     private String userType;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Book> books;
 }

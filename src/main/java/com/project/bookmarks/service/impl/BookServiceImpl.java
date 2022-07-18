@@ -4,6 +4,7 @@ import com.project.bookmarks.exception.ResourceNotFoundException;
 import com.project.bookmarks.model.Book;
 import com.project.bookmarks.model.request.BookRequest;
 import com.project.bookmarks.repository.BookRepository;
+import com.project.bookmarks.repository.UserRepository;
 import com.project.bookmarks.service.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Book> getAllBooks(){
         return bookRepository.findAll();
@@ -39,7 +43,7 @@ public class BookServiceImpl implements BookService {
         updatedBook.setGenre(bookRequest.getGenre());
         updatedBook.setBorrowedDate(bookRequest.getBorrowedDate());
         updatedBook.setDueDate(bookRequest.getDueDate());
-        updatedBook.setUserId(bookRequest.getUserId());
+        updatedBook.setUser(userRepository.findById(bookRequest.getUserId()).get());
         return bookRepository.save(updatedBook);
     }
 
