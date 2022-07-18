@@ -2,6 +2,7 @@ package com.project.bookmarks.service.impl;
 
 import com.project.bookmarks.exception.ResourceNotFoundException;
 import com.project.bookmarks.model.User;
+import com.project.bookmarks.model.request.LoginRequest;
 import com.project.bookmarks.model.request.UserRequest;
 import com.project.bookmarks.repository.UserRepository;
 import com.project.bookmarks.service.UserService;
@@ -14,6 +15,11 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+
+//    public User loginUser(LoginRequest loginRequest){
+//
+//    }
+
 
     public List<User> getAllUsers(){
         return userRepository.findAll();
@@ -31,10 +37,11 @@ public class UserServiceImpl implements UserService {
     public User updateUser(Long id, UserRequest userRequest){
         User updatedUser = userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found!"));
         updatedUser.setName(userRequest.getName());
-        updatedUser.setUserName(userRequest.getUserName());
+        updatedUser.setUsername(userRequest.getUsername());
         updatedUser.setPassword(userRequest.getPassword());
         updatedUser.setEmail(userRequest.getEmail());
         updatedUser.setContactNo(userRequest.getContactNo());
+        updatedUser.setUserType(userRequest.getUserType());
         return userRepository.save(updatedUser);
     }
 

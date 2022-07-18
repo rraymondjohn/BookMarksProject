@@ -3,6 +3,7 @@ package com.project.bookmarks.controller;
 import com.project.bookmarks.model.Book;
 import com.project.bookmarks.model.User;
 import com.project.bookmarks.model.request.BookRequest;
+import com.project.bookmarks.model.request.LoginRequest;
 import com.project.bookmarks.model.request.UserRequest;
 import com.project.bookmarks.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class UserController {
     private UserService userService;
 
     //Login
+//    @GetMapping("/login")
+//    public ResponseEntity<User> loginUser(@RequestBody LoginRequest loginRequest) {
+//
+//    }
+
     //Register
 
     //Get all users
