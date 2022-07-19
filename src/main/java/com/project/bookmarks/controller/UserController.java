@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RequestMapping(path="/bookmarks/users")
 public class UserController {
     @Autowired
@@ -55,6 +55,7 @@ public class UserController {
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
     //Delete User
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
         return new ResponseEntity<>("User deleted", HttpStatus.OK);

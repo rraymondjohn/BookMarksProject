@@ -17,7 +17,7 @@ public class User {
     private String password;
     private String email;
     private Integer contactNo;
-    private String userType;
+    private Boolean isAdmin;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Book> books;

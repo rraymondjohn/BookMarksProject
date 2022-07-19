@@ -2,6 +2,7 @@ package com.project.bookmarks.controller;
 
 import com.project.bookmarks.model.Book;
 import com.project.bookmarks.model.request.BookRequest;
+import com.project.bookmarks.model.request.NewBookRequest;
 import com.project.bookmarks.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RequestMapping(path="/bookmarks/books")
 public class BookController {
     @Autowired
@@ -33,8 +34,8 @@ public class BookController {
     }
     //Add Book
     @PostMapping("/add")
-    public ResponseEntity<Book> addBook(@Valid @RequestBody BookRequest bookRequest){
-        Book newBook = bookService.addBook(bookRequest);
+    public ResponseEntity<Book> addBook(@Valid @RequestBody NewBookRequest newBookRequest){
+        Book newBook = bookService.addBook(newBookRequest);
         return new ResponseEntity<>(newBook, HttpStatus.OK);
     }
     //Update Book

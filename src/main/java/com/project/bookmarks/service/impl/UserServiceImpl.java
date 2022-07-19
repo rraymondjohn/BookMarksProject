@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
         updatedUser.setPassword(userRequest.getPassword());
         updatedUser.setEmail(userRequest.getEmail());
         updatedUser.setContactNo(userRequest.getContactNo());
-        updatedUser.setUserType(userRequest.getUserType());
+        updatedUser.setIsAdmin(userRequest.getIsAdmin());
         return userRepository.save(updatedUser);
     }
 
