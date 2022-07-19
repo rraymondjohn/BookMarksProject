@@ -17,5 +17,5 @@ public class NewUserRequest {
     @Email(message = "Must be in proper email format")
     private String email;
     @NotBlank(message = "Contact Number cannot be empty")
-    private Integer contactNo;
+    private String contactNo;
 }

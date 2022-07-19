@@ -14,6 +14,6 @@ public class BookRequest {
     private String genre;
     private String status;
     private LocalDateTime borrowedDate;
-    private LocalDateTime dueDate;
+    private LocalDateTime dueDate; // 14 days after borrowedDate
     private Long userId;
 }

@@ -5,6 +5,7 @@ import com.project.bookmarks.model.Book;
 import com.project.bookmarks.model.BookStatus;
 import com.project.bookmarks.model.request.BookRequest;
 import com.project.bookmarks.model.request.NewBookRequest;
+import com.project.bookmarks.model.request.ReserveRequest;
 import com.project.bookmarks.repository.BookRepository;
 import com.project.bookmarks.repository.UserRepository;
 import com.project.bookmarks.service.BookService;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -57,5 +59,18 @@ public class BookServiceImpl implements BookService {
 
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
+    }
+
+
+    public Book reserveBook(ReserveRequest reserveRequest){
+        Book reservedBook = getBookById(Long.parseLong(reserveRequest.getBookId()));
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        reservedBook.setStatus(BookStatus.OnLoan.toString());
+        reservedBook.setBorrowedDate(currentDateTime);
+        reservedBook.setDueDate(currentDateTime.plusDays(14));
+        reservedBook.setUser(userRepository.findById(Long.parseLong(reserveRequest.getUserId()))
+                .orElseThrow(()-> new ResourceNotFoundException("User not found!")));
+        log.info("Reserving book info: "+reservedBook);
+        return bookRepository.save(reservedBook);
     }
 }

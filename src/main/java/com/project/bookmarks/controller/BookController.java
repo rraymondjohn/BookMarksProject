@@ -3,6 +3,7 @@ package com.project.bookmarks.controller;
 import com.project.bookmarks.model.Book;
 import com.project.bookmarks.model.request.BookRequest;
 import com.project.bookmarks.model.request.NewBookRequest;
+import com.project.bookmarks.model.request.ReserveRequest;
 import com.project.bookmarks.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,11 @@ public class BookController {
 
     //Search Book
     //Reserve Book
+    @PutMapping("/reserve")
+    public ResponseEntity<Book> reserveBook(@RequestBody ReserveRequest reserveRequest){
+        Book reservedbook = bookService.reserveBook(reserveRequest);
+        return new ResponseEntity<>(reservedbook, HttpStatus.OK);
+    }
 
     //Book Returned
 }

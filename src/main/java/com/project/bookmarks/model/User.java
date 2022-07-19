@@ -1,5 +1,7 @@
 package com.project.bookmarks.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -20,5 +22,7 @@ public class User {
     private Boolean isAdmin;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonManagedReference
+    @JsonIgnore
     private List<Book> books;
 }

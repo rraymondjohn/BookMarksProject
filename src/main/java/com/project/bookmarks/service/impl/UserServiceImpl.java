@@ -3,6 +3,7 @@ package com.project.bookmarks.service.impl;
 import com.project.bookmarks.exception.ResourceNotFoundException;
 import com.project.bookmarks.model.User;
 import com.project.bookmarks.model.request.LoginRequest;
+import com.project.bookmarks.model.request.NewUserRequest;
 import com.project.bookmarks.model.request.UserRequest;
 import com.project.bookmarks.repository.UserRepository;
 import com.project.bookmarks.service.UserService;
@@ -29,8 +30,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found!"));
     }
 
-    public User addUser(UserRequest userRequest) {
+    public User addUser(NewUserRequest newUserRequest) {
         User newUser = new User();
+        newUser.setName(newUserRequest.getName());
+        newUser.setUsername(newUserRequest.getUsername());
+        newUser.setPassword(newUserRequest.getPassword());
+        newUser.setEmail(newUserRequest.getEmail());
+        newUser.setContactNo(Integer.parseInt(newUserRequest.getContactNo()));
+        newUser.setIsAdmin(false);
         return userRepository.save(newUser);
     }
 
