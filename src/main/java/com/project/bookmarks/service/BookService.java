@@ -20,4 +20,6 @@ public interface BookService {
     void deleteBook(Long id);
 
     Book reserveBook(ReserveRequest reserveRequest);
+
+    Book returnBook(Long id);
 }

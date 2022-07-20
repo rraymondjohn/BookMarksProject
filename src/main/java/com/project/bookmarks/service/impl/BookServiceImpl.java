@@ -26,11 +26,19 @@ public class BookServiceImpl implements BookService {
     private UserRepository userRepository;
 
     public List<Book> getAllBooks(){
+
         return bookRepository.findAll();
     }
 
     public Book getBookById(Long id) {
-        return bookRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Book not found!"));
+         Book book = bookRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Book not found!"));
+//        if(LocalDateTime.now().isAfter(book.getDueDate())) {
+//            book.setStatus(BookStatus.Overdue.toString());
+//        } else {
+//            updatedBook.setStatus(bookRequest.getStatus());
+//        }
+
+        return book;
     }
 
     public Book addBook(NewBookRequest newBookRequest) {
@@ -46,6 +54,7 @@ public class BookServiceImpl implements BookService {
 
     public Book updateBook(Long id, BookRequest bookRequest) {
         Book updatedBook = bookRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Book not found!"));
+
         updatedBook.setTitle(bookRequest.getTitle());
         updatedBook.setDescription(bookRequest.getDescription());
         updatedBook.setAuthor(bookRequest.getAuthor());
@@ -54,6 +63,12 @@ public class BookServiceImpl implements BookService {
         updatedBook.setBorrowedDate(bookRequest.getBorrowedDate());
         updatedBook.setDueDate(bookRequest.getDueDate());
         updatedBook.setUser(userRepository.findById(bookRequest.getUserId()).get());
+
+        if(LocalDateTime.now().isAfter(updatedBook.getDueDate())) {
+            updatedBook.setStatus(BookStatus.Overdue.toString());
+        } else {
+            updatedBook.setStatus(bookRequest.getStatus());
+        }
         return bookRepository.save(updatedBook);
     }
 
@@ -72,5 +87,14 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(()-> new ResourceNotFoundException("User not found!")));
         log.info("Reserving book info: "+reservedBook);
         return bookRepository.save(reservedBook);
+    }
+
+    public Book returnBook(Long id){
+        Book returnedBook = getBookById(id);
+        returnedBook.setStatus(BookStatus.Available.toString());
+        returnedBook.setBorrowedDate(null);
+        returnedBook.setDueDate(null);
+        returnedBook.setUser(null);
+        return bookRepository.save(returnedBook);
     }
 }

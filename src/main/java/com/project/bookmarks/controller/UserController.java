@@ -25,11 +25,10 @@ public class UserController {
 
     //Login
     @PostMapping("/login")
-    public ResponseEntity<LoginRequest> loginUser(@RequestBody LoginRequest loginRequest) {
-        return new ResponseEntity<>(loginRequest, HttpStatus.OK);
+    public ResponseEntity<User> loginUser(@RequestBody LoginRequest loginRequest) {
+        User loggedInUser = userService.loginUser(loginRequest);
+        return new ResponseEntity<>(loggedInUser, HttpStatus.OK);
     }
-
-    //Register
 
     //Get all users
     @GetMapping("/all")

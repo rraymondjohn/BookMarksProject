@@ -17,9 +17,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-//    public User loginUser(LoginRequest loginRequest){
-//
-//    }
+    public User loginUser(LoginRequest loginRequest){
+        User user = userRepository.findByUsername(loginRequest.getUsername());
+        if(user == null) {
+            throw new ResourceNotFoundException("Username not found");
+        } else if (!loginRequest.getPassword().equals(user.getPassword())){
+            throw new ResourceNotFoundException("Password does not match");
+        }
+        return user;
+    }
 
 
     public List<User> getAllUsers(){

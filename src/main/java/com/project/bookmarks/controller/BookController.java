@@ -53,12 +53,18 @@ public class BookController {
     }
 
     //Search Book
+
+
     //Reserve Book
     @PutMapping("/reserve")
     public ResponseEntity<Book> reserveBook(@RequestBody ReserveRequest reserveRequest){
         Book reservedbook = bookService.reserveBook(reserveRequest);
         return new ResponseEntity<>(reservedbook, HttpStatus.OK);
     }
-
     //Book Returned
+    @PutMapping("/return/{id}")
+    public ResponseEntity<Book> returnBook(@PathVariable("id") Long id){
+        Book returnedBook = bookService.returnBook(id);
+        return new ResponseEntity<>(returnedBook, HttpStatus.OK);
+    }
 }
