@@ -4,6 +4,7 @@ import com.project.bookmarks.model.Book;
 import com.project.bookmarks.model.request.BookRequest;
 import com.project.bookmarks.model.request.NewBookRequest;
 import com.project.bookmarks.model.request.ReserveRequest;
+import com.project.bookmarks.model.request.SearchRequest;
 import com.project.bookmarks.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,10 +52,12 @@ public class BookController {
         bookService.deleteBook(id);
         return new ResponseEntity<>("Book deleted!", HttpStatus.OK);
     }
-
     //Search Book
-
-
+    @PostMapping("/search")
+    public ResponseEntity<List<Book>> searchBooks(@RequestBody SearchRequest searchRequest) {
+        List<Book> searchedBooks = bookService.searchBooks(searchRequest);
+        return new ResponseEntity<>(searchedBooks, HttpStatus.OK);
+    }
     //Reserve Book
     @PutMapping("/reserve")
     public ResponseEntity<Book> reserveBook(@RequestBody ReserveRequest reserveRequest){

@@ -6,6 +6,7 @@ import com.project.bookmarks.model.BookStatus;
 import com.project.bookmarks.model.request.BookRequest;
 import com.project.bookmarks.model.request.NewBookRequest;
 import com.project.bookmarks.model.request.ReserveRequest;
+import com.project.bookmarks.model.request.SearchRequest;
 import com.project.bookmarks.repository.BookRepository;
 import com.project.bookmarks.repository.UserRepository;
 import com.project.bookmarks.service.BookService;
@@ -74,6 +75,17 @@ public class BookServiceImpl implements BookService {
 
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    public List<Book> searchBooks(SearchRequest searchRequest){
+        String searchedTitle = "%" + searchRequest.getTitle() + "%";
+        String searchedAuthor = "%" + searchRequest.getAuthor() + "%";
+        String searchedGenre = "%" + searchRequest.getGenre() + "%";
+        String searchedStatus = "";
+        if(searchRequest.getIsAvailable()){
+            searchedStatus = "%Available%";
+        }
+        return bookRepository.searchBooks(searchedStatus, searchedTitle, searchedAuthor, searchedGenre);
     }
 
 
