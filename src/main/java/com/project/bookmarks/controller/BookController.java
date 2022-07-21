@@ -3,7 +3,7 @@ package com.project.bookmarks.controller;
 import com.project.bookmarks.model.Book;
 import com.project.bookmarks.model.request.BookRequest;
 import com.project.bookmarks.model.request.NewBookRequest;
-import com.project.bookmarks.model.request.ReserveRequest;
+import com.project.bookmarks.model.request.BorrowRequest;
 import com.project.bookmarks.model.request.SearchRequest;
 import com.project.bookmarks.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -60,9 +59,9 @@ public class BookController {
     }
     //Reserve Book
     @PutMapping("/reserve")
-    public ResponseEntity<Book> reserveBook(@RequestBody ReserveRequest reserveRequest){
-        Book reservedbook = bookService.reserveBook(reserveRequest);
-        return new ResponseEntity<>(reservedbook, HttpStatus.OK);
+    public ResponseEntity<Book> borrowBook(@RequestBody BorrowRequest borrowRequest){
+        Book borrowedBook = bookService.borrowBook(borrowRequest);
+        return new ResponseEntity<>(borrowedBook, HttpStatus.OK);
     }
     //Book Returned
     @PutMapping("/return/{id}")

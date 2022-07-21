@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    @Query("SELECT * FROM books b WHERE b.status LIKE :available AND b.title LIKE :title AND b.author LIKE :author AND b.genre LIKE :genre")
+    @Query("from Book b where b.status like :available and b.title like :title and b.author like :author and b.genre like :genre")
     List<Book> searchBooks(String available, String title, String author, String genre);
 }

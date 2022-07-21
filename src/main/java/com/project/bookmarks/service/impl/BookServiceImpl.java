@@ -5,7 +5,7 @@ import com.project.bookmarks.model.Book;
 import com.project.bookmarks.model.BookStatus;
 import com.project.bookmarks.model.request.BookRequest;
 import com.project.bookmarks.model.request.NewBookRequest;
-import com.project.bookmarks.model.request.ReserveRequest;
+import com.project.bookmarks.model.request.BorrowRequest;
 import com.project.bookmarks.model.request.SearchRequest;
 import com.project.bookmarks.repository.BookRepository;
 import com.project.bookmarks.repository.UserRepository;
@@ -81,24 +81,25 @@ public class BookServiceImpl implements BookService {
         String searchedTitle = "%" + searchRequest.getTitle() + "%";
         String searchedAuthor = "%" + searchRequest.getAuthor() + "%";
         String searchedGenre = "%" + searchRequest.getGenre() + "%";
-        String searchedStatus = "";
+        String searchedStatus = "%%";
         if(searchRequest.getIsAvailable()){
             searchedStatus = "%Available%";
         }
+        System.out.println(searchedTitle + " " + searchedAuthor + " " + searchedGenre + " " + searchedStatus);
         return bookRepository.searchBooks(searchedStatus, searchedTitle, searchedAuthor, searchedGenre);
     }
 
 
-    public Book reserveBook(ReserveRequest reserveRequest){
-        Book reservedBook = getBookById(Long.parseLong(reserveRequest.getBookId()));
+    public Book borrowBook(BorrowRequest borrowRequest){
+        Book borrowedBook = getBookById(Long.parseLong(borrowRequest.getBookId()));
         LocalDateTime currentDateTime = LocalDateTime.now();
-        reservedBook.setStatus(BookStatus.OnLoan.toString());
-        reservedBook.setBorrowedDate(currentDateTime);
-        reservedBook.setDueDate(currentDateTime.plusDays(14));
-        reservedBook.setUser(userRepository.findById(Long.parseLong(reserveRequest.getUserId()))
+        borrowedBook.setStatus(BookStatus.OnLoan.toString());
+        borrowedBook.setBorrowedDate(currentDateTime);
+        borrowedBook.setDueDate(currentDateTime.plusDays(14));
+        borrowedBook.setUser(userRepository.findById(Long.parseLong(borrowRequest.getUserId()))
                 .orElseThrow(()-> new ResourceNotFoundException("User not found!")));
-        log.info("Reserving book info: "+reservedBook);
-        return bookRepository.save(reservedBook);
+        log.info("Reserving book info: " + borrowedBook);
+        return bookRepository.save(borrowedBook);
     }
 
     public Book returnBook(Long id){
