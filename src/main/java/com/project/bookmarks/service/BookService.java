@@ -21,6 +21,8 @@ public interface BookService {
 
     List<Book> searchBooks(SearchRequest searchRequest);
 
+    List<Book> getBooksByUserId(Long id);
+
     Book borrowBook(BorrowRequest borrowRequest);
 
     Book returnBook(Long id);

@@ -13,7 +13,7 @@ public class BookRequest {
     private String imageSource;
     private String genre;
     private String status;
-    private LocalDateTime borrowedDate;
-    private LocalDateTime dueDate; // 14 days after borrowedDate
-    private Long userId;
+//    private LocalDateTime borrowedDate;
+//    private LocalDateTime dueDate; // 14 days after borrowedDate
+//    private Long userId;
 }

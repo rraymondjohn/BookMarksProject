@@ -54,21 +54,24 @@ public class BookServiceImpl implements BookService {
 
     public Book updateBook(Long id, BookRequest bookRequest) {
         Book updatedBook = bookRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Book not found!"));
-
         updatedBook.setTitle(bookRequest.getTitle());
         updatedBook.setDescription(bookRequest.getDescription());
         updatedBook.setAuthor(bookRequest.getAuthor());
         updatedBook.setImageSource(bookRequest.getImageSource());
         updatedBook.setGenre(bookRequest.getGenre());
-        updatedBook.setBorrowedDate(bookRequest.getBorrowedDate());
-        updatedBook.setDueDate(bookRequest.getDueDate());
-        updatedBook.setUser(userRepository.findById(bookRequest.getUserId()).get());
-
-        if(LocalDateTime.now().isAfter(updatedBook.getDueDate())) {
-            updatedBook.setStatus(BookStatus.Overdue.toString());
-        } else {
-            updatedBook.setStatus(bookRequest.getStatus());
-        }
+//        if(bookRequest.getUserId() != null) {
+//            updatedBook.setBorrowedDate(bookRequest.getBorrowedDate());
+//            updatedBook.setDueDate(bookRequest.getDueDate());
+//            updatedBook.setUser(userRepository.findById(bookRequest.getUserId())
+//                    .orElseThrow(()-> new ResourceNotFoundException("User not found!")));
+//        }
+//        if(!updatedBook.getUser().toString().isEmpty()) {
+//            if (LocalDateTime.now().isAfter(updatedBook.getDueDate())) {
+//                updatedBook.setStatus(BookStatus.Overdue.toString());
+//            } else {
+//                updatedBook.setStatus(bookRequest.getStatus());
+//            }
+//        }
         return bookRepository.save(updatedBook);
     }
 
@@ -88,6 +91,10 @@ public class BookServiceImpl implements BookService {
         return bookRepository.searchBooks(searchedStatus, searchedTitle, searchedAuthor, searchedGenre);
     }
 
+    public List<Book> getBooksByUserId(Long id){
+        List<Book> borrowedBooks = bookRepository.findAllByUserId(id);
+        return borrowedBooks;
+    }
 
     public Book borrowBook(BorrowRequest borrowRequest){
         Book borrowedBook = getBookById(Long.parseLong(borrowRequest.getBookId()));

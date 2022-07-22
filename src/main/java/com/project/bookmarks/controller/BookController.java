@@ -59,6 +59,11 @@ public class BookController {
         List<Book> searchedBooks = bookService.searchBooks(searchRequest);
         return new ResponseEntity<>(searchedBooks, HttpStatus.OK);
     }
+    @GetMapping("/borrowedbooks/{id}")
+    public ResponseEntity<List<Book>> getBooksByUserId(@PathVariable("id") Long id) {
+        List<Book> borrowedBooks = bookService.getBooksByUserId(id);
+        return new ResponseEntity<>(borrowedBooks, HttpStatus.OK);
+    }
     //Reserve Book
     @PutMapping("/borrow")
     public ResponseEntity<Book> borrowBook(@RequestBody BorrowRequest borrowRequest){
