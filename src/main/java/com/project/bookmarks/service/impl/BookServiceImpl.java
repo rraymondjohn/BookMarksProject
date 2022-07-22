@@ -14,7 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -27,7 +29,6 @@ public class BookServiceImpl implements BookService {
     private UserRepository userRepository;
 
     public List<Book> getAllBooks(){
-
         return bookRepository.findAll();
     }
 
@@ -35,8 +36,6 @@ public class BookServiceImpl implements BookService {
          Book book = bookRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Book not found!"));
 //        if(LocalDateTime.now().isAfter(book.getDueDate())) {
 //            book.setStatus(BookStatus.Overdue.toString());
-//        } else {
-//            updatedBook.setStatus(bookRequest.getStatus());
 //        }
 
         return book;
@@ -92,14 +91,20 @@ public class BookServiceImpl implements BookService {
 
     public Book borrowBook(BorrowRequest borrowRequest){
         Book borrowedBook = getBookById(Long.parseLong(borrowRequest.getBookId()));
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        borrowedBook.setStatus(BookStatus.OnLoan.toString());
-        borrowedBook.setBorrowedDate(currentDateTime);
-        borrowedBook.setDueDate(currentDateTime.plusDays(14));
-        borrowedBook.setUser(userRepository.findById(Long.parseLong(borrowRequest.getUserId()))
-                .orElseThrow(()-> new ResourceNotFoundException("User not found!")));
-        log.info("Reserving book info: " + borrowedBook);
-        return bookRepository.save(borrowedBook);
+        if(borrowedBook.getStatus().equals(BookStatus.Available.toString())){
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            borrowedBook.setStatus(BookStatus.OnLoan.toString());
+            borrowedBook.setBorrowedDate(currentDateTime);
+            LocalDate dueDate = LocalDate.now();
+            LocalDateTime dueDateTime = LocalTime.MAX.atDate(dueDate);
+            borrowedBook.setDueDate(dueDateTime);
+            borrowedBook.setUser(userRepository.findById(Long.parseLong(borrowRequest.getUserId()))
+                    .orElseThrow(()-> new ResourceNotFoundException("User not found!")));
+            borrowedBook = bookRepository.save(borrowedBook);
+        } else {
+
+        }
+        return borrowedBook;
     }
 
     public Book returnBook(Long id){

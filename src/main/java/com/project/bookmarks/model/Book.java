@@ -1,6 +1,8 @@
 package com.project.bookmarks.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,15 +28,4 @@ public class Book {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
-
-//    public Book(String title, String description, String author, String genre, String status, LocalDateTime borrowedDate, LocalDateTime dueDate, User user) {
-//        this.title = title;
-//        this.description = description;
-//        this.author = author;
-//        this.genre = genre;
-//        this.status = status;
-//        this.borrowedDate = borrowedDate;
-//        this.dueDate = dueDate;
-//        this.user = user;
-//    }
 }

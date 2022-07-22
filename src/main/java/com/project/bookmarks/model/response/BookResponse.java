@@ -1,12 +1,7 @@
 package com.project.bookmarks.model.response;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.project.bookmarks.model.User;
 import lombok.Data;
-
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Data

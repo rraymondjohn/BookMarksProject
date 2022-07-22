@@ -6,6 +6,7 @@ import com.project.bookmarks.model.request.NewBookRequest;
 import com.project.bookmarks.model.request.BorrowRequest;
 import com.project.bookmarks.model.request.SearchRequest;
 import com.project.bookmarks.service.BookService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping(path="/bookmarks/books")
+@Slf4j
 public class BookController {
     @Autowired
     private BookService bookService;
@@ -58,7 +60,7 @@ public class BookController {
         return new ResponseEntity<>(searchedBooks, HttpStatus.OK);
     }
     //Reserve Book
-    @PutMapping("/reserve")
+    @PutMapping("/borrow")
     public ResponseEntity<Book> borrowBook(@RequestBody BorrowRequest borrowRequest){
         Book borrowedBook = bookService.borrowBook(borrowRequest);
         return new ResponseEntity<>(borrowedBook, HttpStatus.OK);
