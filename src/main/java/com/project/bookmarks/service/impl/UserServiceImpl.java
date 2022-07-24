@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
         System.out.println(newUserRequest.getContactNo());
         newUser.setContactNo(Integer.parseInt(newUserRequest.getContactNo()));
         System.out.println(newUser.getContactNo());
-        newUser.setRole(Role.ROLE_USER.toString());
+        newUser.setRole(Role.ROLE_CLIENT.toString());
         return userRepository.save(newUser);
     }
 
