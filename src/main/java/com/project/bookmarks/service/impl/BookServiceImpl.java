@@ -29,15 +29,19 @@ public class BookServiceImpl implements BookService {
     private UserRepository userRepository;
 
     public List<Book> getAllBooks(){
+        List<Book> books = bookRepository.findAll();
+        checkBooksDue(books);
         return bookRepository.findAll();
     }
 
     public Book getBookById(Long id) {
          Book book = bookRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Book not found!"));
-//        if(LocalDateTime.now().isAfter(book.getDueDate())) {
-//            book.setStatus(BookStatus.Overdue.toString());
-//        }
-
+        if(book.getDueDate()!=null){
+            if(LocalDateTime.now().compareTo(book.getDueDate()) > 0) {
+                book.setStatus(BookStatus.Overdue.toString());
+                bookRepository.save(book);
+            }
+        }
         return book;
     }
 
@@ -59,19 +63,7 @@ public class BookServiceImpl implements BookService {
         updatedBook.setAuthor(bookRequest.getAuthor());
         updatedBook.setImageSource(bookRequest.getImageSource());
         updatedBook.setGenre(bookRequest.getGenre());
-//        if(bookRequest.getUserId() != null) {
-//            updatedBook.setBorrowedDate(bookRequest.getBorrowedDate());
-//            updatedBook.setDueDate(bookRequest.getDueDate());
-//            updatedBook.setUser(userRepository.findById(bookRequest.getUserId())
-//                    .orElseThrow(()-> new ResourceNotFoundException("User not found!")));
-//        }
-//        if(!updatedBook.getUser().toString().isEmpty()) {
-//            if (LocalDateTime.now().isAfter(updatedBook.getDueDate())) {
-//                updatedBook.setStatus(BookStatus.Overdue.toString());
-//            } else {
-//                updatedBook.setStatus(bookRequest.getStatus());
-//            }
-//        }
+
         return bookRepository.save(updatedBook);
     }
 
@@ -87,12 +79,17 @@ public class BookServiceImpl implements BookService {
         if(searchRequest.getIsAvailable()){
             searchedStatus = "%Available%";
         }
+
+        List<Book> searchedBooks = bookRepository.searchBooks(searchedStatus, searchedTitle, searchedAuthor, searchedGenre);
+        checkBooksDue(searchedBooks);
+
         System.out.println(searchedTitle + " " + searchedAuthor + " " + searchedGenre + " " + searchedStatus);
         return bookRepository.searchBooks(searchedStatus, searchedTitle, searchedAuthor, searchedGenre);
     }
 
     public List<Book> getBooksByUserId(Long id){
         List<Book> borrowedBooks = bookRepository.findAllByUserId(id);
+        checkBooksDue(borrowedBooks);
         return borrowedBooks;
     }
 
@@ -102,14 +99,12 @@ public class BookServiceImpl implements BookService {
             LocalDateTime currentDateTime = LocalDateTime.now();
             borrowedBook.setStatus(BookStatus.OnLoan.toString());
             borrowedBook.setBorrowedDate(currentDateTime);
-            LocalDate dueDate = LocalDate.now();
-            LocalDateTime dueDateTime = LocalTime.MAX.atDate(dueDate);
+            LocalDate dueDate = LocalDate.now().plusDays(14);
+            LocalDateTime dueDateTime = dueDate.atTime(LocalTime.of(23,59,59));
             borrowedBook.setDueDate(dueDateTime);
             borrowedBook.setUser(userRepository.findById(Long.parseLong(borrowRequest.getUserId()))
                     .orElseThrow(()-> new ResourceNotFoundException("User not found!")));
             borrowedBook = bookRepository.save(borrowedBook);
-        } else {
-
         }
         return borrowedBook;
     }
@@ -121,5 +116,16 @@ public class BookServiceImpl implements BookService {
         returnedBook.setDueDate(null);
         returnedBook.setUser(null);
         return bookRepository.save(returnedBook);
+    }
+
+    public void checkBooksDue(List<Book> books) {
+        for (Book book:books) {
+            if(book.getDueDate()!=null){
+                if(LocalDateTime.now().compareTo(book.getDueDate()) > 0) {
+                    book.setStatus(BookStatus.Overdue.toString());
+                    bookRepository.save(book);
+                }
+            }
+        }
     }
 }

@@ -20,7 +20,7 @@ public class User {
     private String password;
     private String email;
     private Integer contactNo;
-    private Boolean isAdmin;
+    private String role;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference

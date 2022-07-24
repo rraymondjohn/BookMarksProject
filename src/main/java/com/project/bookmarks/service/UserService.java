@@ -4,11 +4,12 @@ import com.project.bookmarks.model.User;
 import com.project.bookmarks.model.request.LoginRequest;
 import com.project.bookmarks.model.request.NewUserRequest;
 import com.project.bookmarks.model.request.UserRequest;
+import com.project.bookmarks.model.response.LoginResponse;
 
 import java.util.List;
 
 public interface UserService {
-    User loginUser(LoginRequest loginRequest);
+    LoginResponse loginUser(LoginRequest loginRequest);
 
     List<User> getAllUsers();
 

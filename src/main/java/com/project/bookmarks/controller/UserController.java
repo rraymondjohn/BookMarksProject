@@ -6,6 +6,7 @@ import com.project.bookmarks.model.request.BookRequest;
 import com.project.bookmarks.model.request.LoginRequest;
 import com.project.bookmarks.model.request.NewUserRequest;
 import com.project.bookmarks.model.request.UserRequest;
+import com.project.bookmarks.model.response.LoginResponse;
 import com.project.bookmarks.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,9 +26,9 @@ public class UserController {
 
     //Login
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody LoginRequest loginRequest) {
-        User loggedInUser = userService.loginUser(loginRequest);
-        return new ResponseEntity<>(loggedInUser, HttpStatus.OK);
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = userService.loginUser(loginRequest);
+        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 
     //Get all users

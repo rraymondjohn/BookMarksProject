@@ -9,5 +9,5 @@ public class UserRequest {
     private String password;
     private String email;
     private Integer contactNo;
-    private Boolean isAdmin;
+    private String role;
 }
