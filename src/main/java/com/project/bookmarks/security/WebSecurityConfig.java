@@ -34,7 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // entry points, allow public access for signup & login endpoint
         http.authorizeRequests()//
                 .antMatchers("/bookmarks/users/login").permitAll()
-                .antMatchers("/bookmarks/**").permitAll()
+                .antMatchers("/bookmarks/books/**").permitAll()
+                .antMatchers("/bookmarks/users/**").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
